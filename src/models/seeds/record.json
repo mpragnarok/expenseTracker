@@ -1,0 +1,81 @@
+{
+  "records": [{
+    "name": "Clean Code",
+    "date": "2019-09-26",
+    "category": "expense",
+    "subCategory": "Other",
+    "amount": "500",
+    "merchant": "",
+    "month": "09",
+    "year": "2019",
+    "day": "26",
+    "sign": "-",
+    "icon": "hand-holding-usd",
+    "subCategoryNum": "4"
+  }, {
+    "name": "Marshall Kilburn II",
+    "date": "2019-09-25",
+    "category": "expense",
+    "subCategory": "Entertainment",
+    "amount": "14000",
+    "merchant": "Marshall",
+    "month": "09",
+    "year": "2019",
+    "day": "25",
+    "sign": "-",
+    "icon": "grin-beam",
+    "subCategoryNum": "2"
+  }, {
+    "name": "Sep first wage",
+    "date": "2019-09-26",
+    "category": "income",
+    "subCategory": "Salary",
+    "amount": "1000000",
+    "merchant": "",
+    "month": "09",
+    "year": "2019",
+    "day": "26",
+    "sign": "+",
+    "icon": "money-check-alt",
+    "subCategoryNum": "6"
+  }, {
+    "name": "flight ticket",
+    "date": "2019-08-25",
+    "category": "expense",
+    "subCategory": "Transportation",
+    "amount": "6000",
+    "merchant": "SkyScanner",
+    "month": "08",
+    "year": "2019",
+    "day": "25",
+    "sign": "-",
+    "icon": "shuttle-van",
+    "subCategoryNum": "1"
+  }, {
+    "name": "Hotel",
+    "date": "2019-08-20",
+    "category": "expense",
+    "subCategory": "Entertainment",
+    "amount": "120000",
+    "merchant": "hotel.com",
+    "month": "08",
+    "year": "2019",
+    "day": "20",
+    "sign": "-",
+    "icon": "grin-beam",
+    "subCategoryNum": "2"
+  }, {
+    "name": "Food",
+    "date": "2019-09-26",
+    "category": "expense",
+    "subCategory": "Food & Beverage",
+    "amount": "5500",
+    "merchant": "",
+    "month": "09",
+    "year": "2019",
+    "day": "26",
+    "sign": "-",
+    "icon": "utensils",
+    "subCategoryNum": "3"
+  }]
+}
