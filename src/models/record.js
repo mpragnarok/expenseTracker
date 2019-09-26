@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+var Float = require('mongoose-float').loadType(mongoose)
 
 const recordSchema = new Schema({
   name: {
@@ -8,28 +9,47 @@ const recordSchema = new Schema({
     trim: true
   },
   category: {
+    type: String
+  },
+  subCategory: {
     type: String,
     required: true
   },
   amount: {
-    type: String,
-    required: true,
-    trim: true
+    type: Float,
+    required: true
   },
   date: {
     type: Date,
-    default: Date.now
-  },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    index: true,
     required: true
+  },
+  month: {
+    type: String
+  },
+  year: {
+    type: String
+  },
+  day: {
+    type: String
+  },
+  sign: {
+    type: String
+  },
+  icon: {
+    type: String
+  },
+  merchant: {
+    type: String
+  },
+  subCategoryNum: {
+    type: String
   }
 
 }, {
   timestamps: true
 })
+
+
 
 const Record = mongoose.model('Record', recordSchema)
 

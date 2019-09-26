@@ -1,0 +1,181 @@
+<div class="row my-5">
+  <div class="card col-md-8 m-auto p row">
+    <div class="card col-md-12 text-center">
+      <div class="card ">
+        <div class="card-header">
+          <div class="float-left">
+            {{!-- year --}}
+            <h1 class="card-title">{{year}} </h1>
+          </div>
+
+          <form action="/" method="GET">
+            <div class="input-group date float-left col-3 months" data-provide="datepicker">
+              {{!-- month --}}
+              <h3 class="text-muted ">{{month}}</h3>
+              <input type="text" class="form-control" placeholder="mm-yyyy" id="monthYear" name="monthYear"
+                onchange="this.form.submit()" value="{{month}}" hidden>
+              <div class="input-group-addon ml-1">
+                <a class="btn"><i class="far fa-calendar-alt"></i></a>
+              </div>
+          </form>
+        </div>
+
+        <div class="float-right">
+          {{!-- category dropdown --}}
+          <div class="dropdown d-inline-block mr-2">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Category:
+              {{#if subCategoryNum}}
+              {{subCategory}}
+              {{/if}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">
+                &#128184; EXPENSE
+              </a>
+              <a class="dropdown-item" href="/records?subCategoryNum=0&subCategory=Home">Home</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=1&subCategory=Transportation">Transportation</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=2&subCategory=Entertainment">Entertainment</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=3&subCategory=Food">Food &
+                Beverage</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=4&subCategory=Other">Other</a>
+              <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">&#128176; INCOME</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=5&subCategory=Gifts">Gifts</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=6&subCategory=Salary">Salary</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=7&subCategory=Interest">Interest</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=8&subCategory=Selling">Selling</a>
+              <a class="dropdown-item" href="/records?subCategoryNum=9&subCategory=Other">Other</a>
+            </div>
+          </div>
+          {{!-- category dropdown--}}
+        </div>
+
+      </div>
+      {{#each sumupMonth}}
+      {{!-- inflow and outflow --}}
+      <div class="card-block my-2">
+
+        <div class="row">
+          <div class="inflow col-md-12">
+            <span class="amount income float-right mb-2">{{this.incomeWithSign}}
+              NT</span>
+            <div class="float-left">Inflow</div>
+          </div>
+          <div class="outflow col-md-12">
+            <span class="amount expense float-right">{{this.expenseWithSign}}
+              NT</span>
+            <div class="float-left">Outflow</div>
+          </div>
+          <div class="total-amount col-md-12 mb-2">
+            <hr>
+            <span class="amount float-right"> {{this.sum}} NT</span>
+
+          </div>
+        </div>
+
+        <a href="/report" class="btn btn-primary">Chart Report</a>
+      </div>
+      {{!-- inflow and outflow --}}
+      {{/each}}
+    </div>
+    {{!-- all transactions --}}
+    <div class="card row " id="accordion" role="tablist" aria-multiselectable="true">
+
+      {{#if sumupDay}}
+      {{#each sumupDay}}
+
+      {{!-- start of date transaction --}}
+      <!--TODO: href link between card header and card body to collapse-->
+      <div class="card col-md-12">
+        <h5 class="card-header" role="tab" id="headingOne">
+          <div data-toggle="collapse" data-parent="#accordion" href="#collapse{{this.dayOfMonth}}" aria-expanded="true"
+            aria-controls="collapseOne" class="d-block ">
+            <div class="transaction-header-content row">
+              <div class="data-view col-md-9 text-left">
+                <h1 class="view-day float-left mr-2">
+                  {{this.dayOfMonth}}
+                </h1>
+                <span class="view-date row  float-left">
+                  <span class="day col-md-12">
+                    {{this.dayOfWeekName}}
+                  </span>
+
+                  <span class="month col-md-12 text-secondary">
+                    {{this.monthName}}
+                    {{this.year}}
+                  </span>
+                </span>
+              </div>
+              <div class="amount-view text-right col-md-3">
+                <span class="amount">
+                  {{this.sum}} NT
+                </span>
+              </div>
+            </div>
+          </div>
+        </h5>
+
+        {{!-- start of individual transaction --}}
+        <div id="collapse{{this.dayOfMonth}}" class="collapse show row" role="tabpanel" aria-labelledby="headingOne">
+          <div class="card-body transactions col-md-12">
+            <ul class="list-group">
+              {{#each this.record}}
+              <div class="transaction">
+                <li class="list-group-item border-0">
+                  <div class="float-right ml-5">
+                    <form action="/records/{{this._id}}/?_method=DELETE" method="POST">
+                      {{!-- edit and delete button --}}
+                      <a href="/records/{{this._id}}/edit" type="button" class="text-secondary" aria-label="Edit">
+                        <span aria-hidden="true"><i class="far fa-edit"></i></span>
+                      </a>
+                      <button type="submit" class="btn" aria-label="Close">
+                        <span aria-hidden="true"><i class="far fa-trash-alt text-secondary"></i></span>
+                      </button>
+                    </form>
+                  </div>
+                  <div class="transaction-row">
+                    <div class=" float-left">
+                      <p class="primary-text text-left">
+                        <i class="fas fa-{{this.icon}}"></i>
+                        <span class="category-name">{{this.subCategory}}</span>
+                      </p>
+                      <p class="secondary-text text-secondary float-left">
+                        <span class="">{{this.name}}</span>
+                      </p>
+                      <p class="secondary-text text-secondary float-right ml-5">
+                        <span class="">{{#if this.merchant}}<i
+                            class="fas fa-map-marker-alt mr-1"></i>{{this.merchant}}{{/if}}</span>
+                      </p>
+                    </div>
+                    <div class="float-right">
+                      <span class="amount">{{this.sign}}{{this.amount}} NT</span>
+                    </div>
+                  </div>
+                </li>
+              </div>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      {{!-- end of date transaction --}}
+      {{/each}}
+      {{else}}
+      <div class="card col-md-12 my-5">
+        <div class="card-header d-flex justify-content-center align-items-center" style="height: 300px;" role="tab"
+          id="headingOne">
+          <h1 class=" mr-5 ">
+            :-(
+          </h1>
+          <h2 class="text-secondary">
+            There's no transaction
+          </h2>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+</div>

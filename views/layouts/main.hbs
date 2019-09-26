@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Expense Tracker</title>
+
+  <!-- bootstrap-->
+  <link rel="stylesheet" href="https://bootswatch.com/4/minty/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  {{!-- bootstrap-datepicker --}}
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+  <!-- google font-->
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/7af529b961.js"></script>
+  <!-- link css files-->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script>
+    $(function () {
+      $('.dates input').datepicker({
+        'format': "dd-mm-yyyy",
+        'autoclose': true,
+        'todayHighlight': true,
+        'todayBtn': "linked"
+      });
+      $('.months').datepicker({
+        'format': "mm-yyyy",
+        'autoclose': true,
+        'startView': 'months',
+        'minViewMode': 'months'
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <header>
+    <!-- navigation -->
+    <nav class="navbar navbar-light bg-light justify-content-between fixed-top">
+      <a class="navbar-brand" href="/">
+        <span style="font-size: 30px; color: Tomato;"><i class="fas fa-wallet"></i></span>
+        Expense Tracker
+      </a>
+      <div class="btn-group float-right">
+        <a href="/records/add" class="btn btn-outline-success mr-2">Add transaction</a>
+        <a href="/users/logout" class="btn btn-outline-dark ">Logout</a>
+      </div>
+
+    </nav>
+  </header>
+
+  <!-- partial templates will replace the part of "body" here -->
+  <div class="container mt-5 py-5">
+    {{{body}}}
+  </div>
+
+
+
+  <!-- javascript files -->
+  <script src="/src/app.js"></script>
+
+
+</body>
+
+</html>

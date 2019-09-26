@@ -36,5 +36,9 @@ app.use(express.static('public'))
 
 // route setting
 app.use('/', require('./routers/home'))
-app.use('/record', require('./routers/record'))
-app.use('/users', require('./routers/user'))
+app.use('/records', require('./routers/record'))
+// app.use('/users', require('./routers/user'))
+
+app.listen(port, () => {
+  console.log(`Express is listening on port: ${port}`)
+})

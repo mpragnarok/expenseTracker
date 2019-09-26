@@ -1,0 +1,29 @@
+a {
+  color: #1F201F;
+  text-decoration: none;
+}
+
+.transaction:hover {
+  cursor: pointer;
+  background-color: #EFF9F1;
+
+}
+
+
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+
+}
+
+.transaction-header-content {
+  cursor: pointer;
+}
+
+.collapsed {
+  text-decoration: none;
+}
+
+.card {
+  border: none;
+}
