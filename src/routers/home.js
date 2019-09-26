@@ -144,7 +144,7 @@ router.get('/', authenticated, async (req, res) => {
 
     res.render('index', { month, year, sumupDay, sumupMonth })
   } catch (e) {
-    res.status(500).send()
+    res.status(500).send(e)
   }
 })
 
