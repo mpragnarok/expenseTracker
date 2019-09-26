@@ -56,8 +56,16 @@
         Expense Tracker
       </a>
       <div class="btn-group float-right">
-        <a href="/records/add" class="btn btn-outline-success mr-2">Add transaction</a>
-        <a href="/users/logout" class="btn btn-outline-dark ">Logout</a>
+        {{#if isAuthenticated}}
+        <div class="button-group">
+          <a href="/records/add" class="btn btn-outline-success mr-2">Add transaction</a>
+          <a href="/" class="btn btn-outline-info mr-2">Welcome {{user.name}}</a>
+          <a href="/users/logout" class="btn btn-outline-dark">Logout</a>
+        </div>
+        {{else}}
+        <a href="/users/login" class="btn btn-outline-dark">Login</a>
+        {{/if}}
+
       </div>
 
     </nav>

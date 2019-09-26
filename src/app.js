@@ -31,14 +31,39 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // setup method-override
 app.use(methodOverride('_method'))
 
+// setup express-session
+app.use(session({
+  secret: 'secretKey belong to Mina',
+  resave: false,
+  saveUninitialized: true
+}))
+
+// setup passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+// setup connect-flash
+app.use(flash())
+
+// import passport config
+require('../config/passport')(passport)
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
+  next()
+})
 // static files
 app.use(express.static('public'))
 
 // route setting
 app.use('/', require('./routers/home'))
 app.use('/records', require('./routers/record'))
-// app.use('/users', require('./routers/user'))
+app.use('/users', require('./routers/user'))
+app.use('/auth', require('./routers/auths'))
 
+// set up listening on Express server
 app.listen(port, () => {
   console.log(`Express is listening on port: ${port}`)
 })

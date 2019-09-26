@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../models/record')
+const { authenticated } = require('../../config/auth')
+const mongoose = require('mongoose')
+let ObjectId = mongoose.Types.ObjectId
 
 
 // fetch all records
-router.get('/', async (req, res) => {
+router.get('/', authenticated, async (req, res) => {
   const date = new Date()
   const monthYear = req.query.monthYear
   let [day = (("0" + date.getDate()).slice(-2)), month = ('0' + ((date.getMonth() + 1).toString())).slice(-2), year = date.getFullYear().toString()] = []
@@ -12,12 +15,9 @@ router.get('/', async (req, res) => {
   const subCategory = req.query.subCategory
   let regex = RegExp(/([0-9])$/)
 
-
   function checkSubCategory(query) {
     return regex.test(query)
   }
-
-  console.log(checkSubCategory(subCategoryNum))
 
   try {
     if (monthYear !== undefined) {
@@ -25,61 +25,64 @@ router.get('/', async (req, res) => {
       year = req.query.monthYear.split('-')[1]
     }
 
-
     // sum up all the expense and income
-
-
     const sumupMonth = await Record.aggregate([{
-        $match: { $and: [{ 'month': month }, { 'year': year }] }
-      }, {
-        $group: {
-          _id: {
-            month: { $month: "$date" },
-            year: { $year: "$date" }
+      $match: {
+        $and: [{ 'month': month }, { 'year': year },
+          { 'userId': new ObjectId(req.user._id) }
+        ]
+      }
+    }, {
+      $group: {
+        _id: {
+          month: { $month: "$date" },
+          year: { $year: "$date" }
+        },
+        expense: {
+          $sum: {
+            $cond: [
+              { $eq: ["$category", "expense"] },
+              "$amount", 0
+            ]
           },
-          expense: {
-            $sum: {
-              $cond: [
-                { $eq: ["$category", "expense"] },
-                "$amount", 0
-              ]
-            },
-          },
-          income: {
-            $sum: {
-              $cond: [
-                { $eq: ["$category", "income"] },
-                "$amount", 0
-              ]
-            }
+        },
+        income: {
+          $sum: {
+            $cond: [
+              { $eq: ["$category", "income"] },
+              "$amount", 0
+            ]
           }
         }
-      }, {
-        $addFields: {
-          expenseString: { $convert: { input: "$expense", to: "string" } },
-          incomeString: { $convert: { input: "$income", to: "string" } }
-        }
-      },
-      {
-        $project: {
-
-          category: "$_id.category",
-          expenseWithSign: {
-            $concat: ["-", "$expenseString"]
-          },
-          incomeWithSign: {
-            $concat: ["+", "$incomeString"]
-          },
-          sum: { $subtract: ["$income", "$expense"] }
-        }
       }
-    ])
+    }, {
+      $addFields: {
+        expenseString: { $convert: { input: "$expense", to: "string" } },
+        incomeString: { $convert: { input: "$income", to: "string" } }
+      }
+    }, {
+      $project: {
+
+        category: "$_id.category",
+        expenseWithSign: {
+          $concat: ["-", "$expenseString"]
+        },
+        incomeWithSign: {
+          $concat: ["+", "$incomeString"]
+        },
+        sum: { $subtract: ["$income", "$expense"] }
+      }
+    }])
 
     // sumup day balance
 
 
     let sumupDay = await Record.aggregate([{
-      $match: { $and: [{ 'month': month }, { 'year': year }] }
+      $match: {
+        $and: [{ 'month': month }, { 'year': year },
+          { 'userId': new ObjectId(req.user._id) }
+        ]
+      }
     }, {
       $group: {
         _id: {
@@ -148,7 +151,11 @@ router.get('/', async (req, res) => {
     if (subCategoryNum && checkSubCategory(subCategoryNum) === true) {
 
       sumupDay = await Record.aggregate([{
-        $match: { $and: [{ 'month': month }, { 'year': year }, { 'subCategoryNum': subCategoryNum }] }
+        $match: {
+          $and: [{ 'month': month }, { 'year': year }, { 'subCategoryNum': subCategoryNum },
+            { 'userId': new ObjectId(req.user._id) }
+          ]
+        }
       }, {
         $group: {
           _id: {
@@ -226,7 +233,7 @@ router.get('/', async (req, res) => {
 
 // create a new transaction in page
 
-router.get('/add', async (req, res) => {
+router.get('/add', authenticated, async (req, res) => {
   const date = new Date()
   let [day = (("0" + date.getDate()).slice(-2)), month = ('0' + ((date.getMonth() + 1).toString())).slice(-2), year = date.getFullYear().toString()] = []
 
@@ -238,7 +245,7 @@ router.get('/add', async (req, res) => {
 })
 
 // create a new transaction
-router.post('/', async (req, res) => {
+router.post('/', authenticated, async (req, res) => {
   let { name, date, subCategoryValue, amount, merchant } = req.body
   let [day, month, year] = date.split('-')
   let [category, subCategory, icon, subCategoryNum] = subCategoryValue.split('/')
@@ -267,8 +274,8 @@ router.post('/', async (req, res) => {
     month: monthField,
     year,
     day: dayField,
-    merchant
-
+    merchant,
+    userId: req.user._id
   })
   let errors = []
   try {
@@ -298,9 +305,9 @@ router.post('/', async (req, res) => {
 })
 
 // update a transaction in page
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', authenticated, async (req, res) => {
   try {
-    const record = await Record.findById(req.params.id)
+    const record = await Record.findOne({ _id: req.params.id, userId: req.user._id })
     if (!record) {
       return res.status(404).send()
     }
@@ -310,13 +317,12 @@ router.get('/:id/edit', async (req, res) => {
   }
 })
 
-// TODO: update transaction
 // update a transaction
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticated, async (req, res) => {
 
 
   let errors = []
-  const record = await Record.findOne({ _id: req.params.id })
+  const record = await Record.findOne({ _id: req.params.id, userId: req.user._id })
 
   let { name, date, subCategoryValue, amount, merchant } = req.body
   let [day, month, year] = date.split('-')
@@ -379,9 +385,9 @@ router.put('/:id', async (req, res) => {
   }
 })
 // delete a transaction
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticated, async (req, res) => {
   try {
-    const record = await Record.findOne({ _id: req.params.id })
+    const record = await Record.findOne({ _id: req.params.id, userId: req.user._id })
     if (!record) {
       return res.status(404).send()
     }

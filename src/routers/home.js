@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../models/record')
+const { authenticated } = require('../../config/auth')
+const mongoose = require('mongoose')
+let ObjectId = mongoose.Types.ObjectId
 
 
 // expense-tracker homepage
-router.get('/', async (req, res) => {
+router.get('/', authenticated, async (req, res) => {
   const date = new Date()
   const monthYear = req.query.monthYear
   let [day = (("0" + date.getDate()).slice(-2)), month = ('0' + ((date.getMonth() + 1).toString())).slice(-2), year = date.getFullYear().toString()] = []
@@ -16,7 +19,11 @@ router.get('/', async (req, res) => {
 
     // sum up all the expense and income
     const sumupMonth = await Record.aggregate([{
-        $match: { $and: [{ 'month': month }, { 'year': year }] }
+        $match: {
+          $and: [{ 'month': month }, { 'year': year },
+            { 'userId': new ObjectId(req.user._id) }
+          ]
+        }
       }, {
         $group: {
           _id: {
@@ -62,10 +69,12 @@ router.get('/', async (req, res) => {
     ])
 
     // sumup day balance
-
-
     const sumupDay = await Record.aggregate([{
-      $match: { $and: [{ 'month': month }, { 'year': year }] }
+      $match: {
+        $and: [{ 'month': month }, { 'year': year },
+          { 'userId': new ObjectId(req.user._id) }
+        ]
+      }
     }, {
       $group: {
         _id: {

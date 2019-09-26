@@ -43,6 +43,12 @@ const recordSchema = new Schema({
   },
   subCategoryNum: {
     type: String
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
   }
 
 }, {
