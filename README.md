@@ -1,7 +1,7 @@
 # Expense tracker
 **[Heroku demo](https://restaurant-list-minahuang.herokuapp.com)**
 
-This is a restaurant list demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
+This is a expense tracker demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
 
 ![demo-index](./public/img/demo-auth-gif.gif)
 
@@ -21,7 +21,7 @@ This is a restaurant list demo which built up from [Alphacamp](https://tw.alphac
 `git clone` to clone the project.
 
 ```markdown
-git clone https://github.com/mpragnarok/restaurant-list.git
+git clone https://github.com/mpragnarok/expenseTracker.git
 ```
 ### MongoDB server
 
@@ -71,13 +71,13 @@ Stop running server.
 
 ### Browser
 
-Head to [http://localhost:3000](http://localhost:3000) to experience the restaurant list demo.
+Head to [http://localhost:3000](http://localhost:3000) to experience the expense tracker demo.
 
 ## Description
 
 ​	The page has a dynamic index to show up the content of web page which contains front-end and back-end techniques. Front-end part is written in **JavaScript**, **CSS** and **HTML** with **Bootstrap**, back-end part is written in **Node.js** and **Express.js**, server side uses  **MongoDB** with **Mongoose**.  
 
-​	The dynamic webpage is made up by **handlebars**. All the transactions group by day and month. 
+​	The dynamic webpage is made up by **handlebars**. All the transactions group by day and month. And can be choose from pop-up calendar.
 
 ​	Additionally, it has login authentication with local strategy and Facebook strategy which create with **passport.js** , users can only look up the restaurants data which they've added.
 
@@ -106,6 +106,8 @@ Head to [http://localhost:3000](http://localhost:3000) to experience the restaur
 
 ## Future Update
 1. Sending emails  when you register, delete user, change password.
-2. user avatar upload.
-3. user update password and info page
-4. report.hbs to see the graphic report of transaction
+2. Complete user route CRUD:
+   1. User avatar upload.
+   2. User update password and info page.
+   3. Delete user.
+3. report page to see the graphic report of transaction.
