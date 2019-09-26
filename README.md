@@ -1,9 +1,9 @@
 # Expense tracker
-**[Heroku demo](https://restaurant-list-minahuang.herokuapp.com)**
+**[Heroku demo](https://expense-tracker-mina.herokuapp.com/)**
 
 This is a expense tracker demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
 
-![demo-index](./public/img/demo-auth-gif.gif)
+![demo-index](./public/img/demo.gif)
 
 ## Feature
 1. Show transactions group by date and month.
@@ -88,7 +88,6 @@ Head to [http://localhost:3000](http://localhost:3000) to experience the expense
 1. bcryptjs: 2.4.3
 2. body-parser: 1.19.0
 3. connect-flash: 0.1.1
-4. dotenv: 0.1.1
 5. express: 4.17.1
 6. express-handlebars: 3.1.0
 7. express-session: 1.16.2
@@ -103,6 +102,7 @@ Head to [http://localhost:3000](http://localhost:3000) to experience the expense
 #### devDependency
 
 1. nodemon: 1.19.1
+2. dotenv: 8.1.1
 
 ## Future Update
 1. Sending emails  when you register, delete user, change password.
