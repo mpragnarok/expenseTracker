@@ -6,10 +6,8 @@ const User = require('../models/user')
 // show login page
 router.get('/login', async (req, res) => {
   try {
-    // console.log(req.flash('error'))
+
     res.render('login', { message: req.flash('error') })
-
-
   } catch (e) {
     res.status(500).send(e)
   }
