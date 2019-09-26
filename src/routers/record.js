@@ -57,8 +57,8 @@ router.get('/', authenticated, async (req, res) => {
       }
     }, {
       $addFields: {
-        expenseString: { $convert: { input: "$expense", to: "string" } },
-        incomeString: { $convert: { input: "$income", to: "string" } }
+        expenseString: { $substr: ["$expense", 0, -1] },
+        incomeString: { $substr: ["$income", 0, -1] }
       }
     }, {
       $project: {
