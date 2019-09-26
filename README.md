@@ -111,3 +111,4 @@ Head to [http://localhost:3000](http://localhost:3000) to experience the expense
    2. User update password and info page.
    3. Delete user.
 3. report page to see the graphic report of transaction.
+4. Summarize all the transactions, inflow and outflow with category filter.
