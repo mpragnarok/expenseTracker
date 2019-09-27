@@ -1,7 +1,7 @@
 # Expense tracker
 **[Heroku demo](https://expense-tracker-mina.herokuapp.com/)**
 
-This is a expense tracker demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
+This is an expense tracker demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
 
 ![demo-index](./public/img/demo.gif)
 
@@ -80,7 +80,7 @@ Head to [http://localhost:3000](http://localhost:3000) to experience the expense
 
 ​	The dynamic webpage is made up by **handlebars**. All the transactions group by day and month. And can be choose from pop-up calendar.
 
-​	Additionally, it has login authentication with local strategy and Facebook strategy which create with **passport.js** , users can only look up the restaurants data which they've added.
+​	Additionally, it has login authentication with local strategy and Facebook strategy which create with **passport.js** , users can only look up the transactions data which they've added.
 
 ## packages
 
