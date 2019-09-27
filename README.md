@@ -79,7 +79,7 @@ Head to [http://localhost:3000](http://localhost:3000) to experience the expense
 
 ​	The dynamic webpage is made up by **handlebars**. All the transactions group by day and month. And can be choose from pop-up calendar.
 
-​	Additionally, it has login authentication with local strategy and Facebook strategy which create with **passport.js** , users can only look up the restaurants data which they've added.
+​	Additionally, it has login authentication with local strategy and Facebook strategy which create with **passport.js** , users can only look up the transactions data which they've added.
 
 ## packages
 
