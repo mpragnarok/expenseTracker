@@ -26,7 +26,7 @@ router.get('/', authenticated, async (req, res) => {
     }
 
     // sum up all the expense and income
-    const sumupMonth = await Record.aggregate([{
+    let sumupMonth = await Record.aggregate([{
       $match: {
         $and: [{ 'month': month }, { 'year': year },
           { 'userId': new ObjectId(req.user._id) }
@@ -150,6 +150,7 @@ router.get('/', authenticated, async (req, res) => {
 
     if (subCategoryNum && checkSubCategory(subCategoryNum) === true) {
 
+
       sumupDay = await Record.aggregate([{
         $match: {
           $and: [{ 'month': month }, { 'year': year }, { 'subCategoryNum': subCategoryNum },
@@ -220,6 +221,56 @@ router.get('/', authenticated, async (req, res) => {
       }, {
         $sort: { "dayOfMonth": -1 }
       }])
+
+
+      sumupMonth = await Record.aggregate([{
+        $match: {
+          $and: [{ 'month': month }, { 'year': year }, { 'subCategoryNum': subCategoryNum },
+            { 'userId': new ObjectId(req.user._id) }
+          ]
+        }
+      }, {
+        $group: {
+          _id: {
+            month: { $month: "$date" },
+            year: { $year: "$date" }
+          },
+          expense: {
+            $sum: {
+              $cond: [
+                { $eq: ["$category", "expense"] },
+                "$amount", 0
+              ]
+            },
+          },
+          income: {
+            $sum: {
+              $cond: [
+                { $eq: ["$category", "income"] },
+                "$amount", 0
+              ]
+            }
+          }
+        }
+      }, {
+        $addFields: {
+          expenseString: { $substr: ["$expense", 0, -1] },
+          incomeString: { $substr: ["$income", 0, -1] }
+        }
+      }, {
+        $project: {
+
+          category: "$_id.category",
+          expenseWithSign: {
+            $concat: ["-", "$expenseString"]
+          },
+          incomeWithSign: {
+            $concat: ["+", "$incomeString"]
+          },
+          sum: { $subtract: ["$income", "$expense"] }
+        }
+      }])
+
     }
 
     // console.log('sumupDay', sumupDay)
@@ -313,7 +364,7 @@ router.get('/:id/edit', authenticated, async (req, res) => {
     }
     res.render('edit', { record })
   } catch (e) {
-    res.status(500).send()
+    res.status(500).send(e)
   }
 })
 
@@ -394,7 +445,7 @@ router.delete('/:id', authenticated, async (req, res) => {
     record.remove()
     res.redirect('/')
   } catch (e) {
-    res.status(500).send()
+    res.status(500).send(e)
   }
 })
 
