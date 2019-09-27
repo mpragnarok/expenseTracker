@@ -1,7 +1,7 @@
 # Expense tracker
 **[Heroku demo](https://expense-tracker-mina.herokuapp.com/)**
 
-This is a expense tracker demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
+This is an expense tracker demo which built up from [Alphacamp](https://tw.alphacamp.co/) semester 3 assignment.
 
 ![demo-index](./public/img/demo.gif)
 
