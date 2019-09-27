@@ -15,3 +15,6 @@ package-lock.json
 .env
 # tree
 tree.txt
+
+# future update
+/views/index-with-report-button.hbs
